@@ -1,8 +1,8 @@
 # Proyecto base para Android Studio
 
-Este es un proyecto base para comenzar ya con el setup incial de una app básica en Android con un simple comando en la consola.  
+Este es un proyecto base para comenzar ya con el setup inicial de una app básica en Android con un simple comando en la consola.  
   
-El proyecto tiene la siguiente configuración incial
+El proyecto tiene la siguiente configuración inicial
     
 
   * *Fragments Navigation* con *Safe Args*
@@ -12,7 +12,7 @@ El proyecto tiene la siguiente configuración incial
   * Una base de datos básica usando *Room*
   * La configuración necesaria para usar *shared preferences* encriptadas
 
-Para facilitar inciar un nuevo proyecto con esta configuración se ha creado un script `new_android_project` y una estructura de carpetas específica que no corresponde exactamente con la estructura necesaria para Android Studio. Por tal motivo se debe incializar el proyecto haciendo uso del script antes mencionado.  
+Para facilitar iniciar un nuevo proyecto con esta configuración se ha creado un script `new_android_project` y una estructura de carpetas específica que no corresponde exactamente con la estructura necesaria para Android Studio. Por tal motivo se debe inicializar el proyecto haciendo uso del script antes mencionado.  
   
 **Recomendación**
 

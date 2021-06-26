@@ -1,0 +1,80 @@
+#!/bin/bash
+override_folder='false'
+
+script_path=`realpath $0`
+script_folder=`dirname $script_path`
+
+while getopts p:n:r flag
+do
+    case "${flag}" in
+        p) package=${OPTARG};;
+        n) project_name=${OPTARG};;
+		r) override_folder='true' ;;
+    esac
+done
+
+# Verificar que se haya seteado el package
+if [ "$package" = "" ]; then
+    echo "Es necesario definir el paquete del projecto mediante la opción '-p'"
+    exit 1
+fi
+
+# Verificar que se haya seteado el name
+if [ "$project_name" = "" ]; then
+    echo "Es necesario definir el nombre del projecto mediante la opción '-n'"
+    exit 1
+fi
+
+project_folder="${PWD}/${project_name}"
+
+# Verificar que la carpeta no exista
+if [ -d "${project_folder}" ] && [ "$override_folder" = "false" ] ; then
+    echo "La carpeta ${project_name} ya existe"
+    echo "Si desea sobreescribir la carpeta use la opción '-r'"
+    exit 1
+# eliminar la carpeta si fue seteada la opcion -r
+elif [ -d "${project_folder}" ] ; then
+    echo "Eliminando la carpeta ${project_folder}"
+	rm -rf "${project_folder}"
+fi
+
+# crear la carpeta
+mkdir "${project_folder}"
+
+# copiar los archivos del proyecto sin el codigo fuente
+echo "Copiando archivos del proyecto base"
+cp -r "${script_folder}/default_project/"* "./${project_name}/"
+
+package_path="${package//.//}"
+
+android_test_folder="./${project_name}/app/src/androidTest/java/${package_path}"
+main_folder="./${project_name}/app/src/main/java/${package_path}"
+test_folder="./${project_name}/app/src/test/java/${package_path}"
+
+echo "Creando carpeta androidTest"
+mkdir -p "${android_test_folder}"
+
+echo "Creando carpeta main"
+mkdir -p "${main_folder}"
+
+echo "Creando carpeta test"
+mkdir -p "${test_folder}"
+
+echo "Copiando archivos de androidTest"
+cp -r "${script_folder}/default_code/androidTest/"* "./${android_test_folder}/"
+
+echo "Copiando archivos de main"
+cp -r "${script_folder}/default_code/main/"* "./${main_folder}/"
+
+echo "Copiando archivos de test"
+cp -r "${script_folder}/default_code/test/"* "./${test_folder}/"
+
+echo "Reemplazando el package name"
+replace_package="${package//./\\.}"
+grep -rl cu.jaco.transito "./${project_name}/" | xargs sed -i "s/cu\.jaco\.transito/${replace_package}/g"
+
+echo "Estableciendo el app_name"
+echo >> "./${project_name}/build.properties"
+echo "app_name=\"${project_name}\"" >> "./${project_name}/build.properties"
+
+echo "Proyecto creado satisfactoriamente"

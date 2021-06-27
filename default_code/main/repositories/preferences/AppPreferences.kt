@@ -29,7 +29,7 @@ object AppPreferences {
     }
 
     var firstTimeOpen: Boolean
-        get() = sharedPreferences.getBoolean("firstTimeOpen", false)
+        get() = sharedPreferences.getBoolean("firstTimeOpen", true)
         set(value) = sharedPreferences.put {
             putBoolean("firstTimeOpen", value)
         }

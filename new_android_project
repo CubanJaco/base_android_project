@@ -38,18 +38,22 @@ elif [ -d "${project_folder}" ] ; then
 	rm -rf "${project_folder}"
 fi
 
+timestamp=$(date +%s)
+temp_project_name="${project_name/ /_}_${timestamp}"
+echo "Escribiendo en la carpeta temporal ${temp_project_name}"
+
 # crear la carpeta
-mkdir "${project_folder}"
+mkdir "${temp_project_name}"
 
 # copiar los archivos del proyecto sin el codigo fuente
 echo "Copiando archivos del proyecto base"
-cp -r "${script_folder}/default_project/"* "./${project_name}/"
+cp -r "${script_folder}/default_project/"* "./${temp_project_name}/"
 
 package_path="${package//.//}"
 
-android_test_folder="./${project_name}/app/src/androidTest/java/${package_path}"
-main_folder="./${project_name}/app/src/main/java/${package_path}"
-test_folder="./${project_name}/app/src/test/java/${package_path}"
+android_test_folder="./${temp_project_name}/app/src/androidTest/java/${package_path}"
+main_folder="./${temp_project_name}/app/src/main/java/${package_path}"
+test_folder="./${temp_project_name}/app/src/test/java/${package_path}"
 
 echo "Creando carpeta androidTest"
 mkdir -p "${android_test_folder}"
@@ -71,10 +75,13 @@ cp -r "${script_folder}/default_code/test/"* "./${test_folder}/"
 
 echo "Reemplazando el package name"
 replace_package="${package//./\\.}"
-grep -rl cu.jaco.transito "./${project_name}/" | xargs sed -i "s/cu\.jaco\.transito/${replace_package}/g"
+grep -rl cu.jaco.transito "./${temp_project_name}/" | xargs sed -i "s/cu\.jaco\.transito/${replace_package}/g"
 
 echo "Estableciendo el app_name"
-echo >> "./${project_name}/build.properties"
-echo "app_name=\"${project_name}\"" >> "./${project_name}/build.properties"
+echo >> "./${temp_project_name}/build.properties"
+echo "app_name=\"${temp_project_name}\"" >> "./${temp_project_name}/build.properties"
+
+echo "Renombrando la carpeta a: ${project_name}"
+mv "./${temp_project_name}" "./${project_name}"
 
 echo "Proyecto creado satisfactoriamente"

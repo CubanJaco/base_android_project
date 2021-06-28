@@ -39,7 +39,7 @@ elif [ -d "${project_folder}" ] ; then
 fi
 
 timestamp=$(date +%s)
-temp_project_name="${project_name/ /_}_${timestamp}"
+temp_project_name="${project_name// /_}_${timestamp}"
 echo "Escribiendo en la carpeta temporal ${temp_project_name}"
 
 # crear la carpeta
@@ -79,7 +79,10 @@ grep -rl cu.jaco.transito "./${temp_project_name}/" | xargs sed -i "s/cu\.jaco\.
 
 echo "Estableciendo el app_name"
 echo >> "./${temp_project_name}/build.properties"
-echo "app_name=\"${temp_project_name}\"" >> "./${temp_project_name}/build.properties"
+echo "app_name=\"${project_name}\"" >> "./${temp_project_name}/build.properties"
+
+echo >> "./${temp_project_name}/settings.gradle"
+echo "rootProject.name = \"${project_name}\"" >> "./${temp_project_name}/build.properties"
 
 echo "Renombrando la carpeta a: ${project_name}"
 mv "./${temp_project_name}" "./${project_name}"

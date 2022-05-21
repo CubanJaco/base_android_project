@@ -75,14 +75,25 @@ cp -r "${script_folder}/default_code/test/"* "./${test_folder}/"
 
 echo "Reemplazando el package name"
 replace_package="${package//./\\.}"
-grep -rl cu.jaco.transito "./${temp_project_name}/" | xargs sed -i "s/cu\.jaco\.transito/${replace_package}/g"
+grep -rl cu.jaco.designcomposecodelab "./${temp_project_name}/" | xargs sed -i "s/cu\.jaco\.designcomposecodelab/${replace_package}/g"
 
 echo "Estableciendo el app_name"
-echo >> "./${temp_project_name}/build.properties"
-echo "app_name=\"${project_name}\"" >> "./${temp_project_name}/build.properties"
 
-echo >> "./${temp_project_name}/settings.gradle"
-echo "rootProject.name = \"${project_name}\"" >> "./${temp_project_name}/build.properties"
+# Guarda el nombre del projecto en un archivo para luego eliminar los espacios con `sed`
+echo "${project_name}" >> "./${temp_project_name}/tmp.txt"
+sed -i "s/ //g" "./${temp_project_name}/tmp.txt"
+
+# Leer nuevamente del archivo el nombre del proyecto sin espacios
+normalized_name=$(cat "./${temp_project_name}/tmp.txt")
+# eliminar el archivo tmp.txt
+rm "./${temp_project_name}/tmp.txt"
+
+# Reemplazar el nombre del proyecto
+grep -rl "DesignComposeCodelab" "./${temp_project_name}/" | xargs sed -i "s/DesignComposeCodelab/${normalized_name}/g"
+
+# mv "./${temp_project_name}/app/src/main/res/values/strings.xml" "./${temp_project_name}/app/src/main/res/values/strings_copy.xml"
+# sed "s/DesignComposeCodelab/${project_name}/g" "./${temp_project_name}/app/src/main/res/values/strings_copy.xml" >> "./${temp_project_name}/app/src/main/res/values/strings.xml"
+# rm "./${temp_project_name}/app/src/main/res/values/strings_copy.xml"
 
 echo "Renombrando la carpeta a: ${project_name}"
 mv "./${temp_project_name}" "./${project_name}"

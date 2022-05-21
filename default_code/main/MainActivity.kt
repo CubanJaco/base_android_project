@@ -1,19 +1,43 @@
-package cu.jaco.transito
+package cu.jaco.designcomposecodelab
 
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import cu.jaco.transito.databinding.ActivityMainBinding
-import cu.jaco.transito.ui.base.BaseActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import cu.jaco.designcomposecodelab.ui.theme.DesignComposeCodelabTheme
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
-    override fun fragmentContainer(): Int = R.id.nav_host_fragment
-
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContent {
+            DesignComposeCodelabTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    Greeting("Android")
+                }
+            }
+        }
     }
+}
 
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    DesignComposeCodelabTheme {
+        Greeting("Android")
+    }
 }

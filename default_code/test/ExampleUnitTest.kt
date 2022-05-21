@@ -1,4 +1,4 @@
-package cu.jaco.transito
+package cu.jaco.designcomposecodelab
 
 import org.junit.Test
 

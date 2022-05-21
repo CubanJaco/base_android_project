@@ -1,10 +1,3 @@
 <resources>
-
-    <string name="navigation_drawer_open">Mostrar menú de navegación</string>
-    <string name="navigation_drawer_close">Ocultar menú de navegación</string>
-
-    <string name="one_more_time">Presione nuevamente para salir</string>
-
-    <string name="fragment_main_label">Inicio</string>
-
+    <string name="app_name">DesignComposeCodelab</string>
 </resources>
